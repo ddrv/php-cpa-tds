@@ -1,0 +1,29 @@
+{
+  "name": "ddrv/tds",
+  "version":"1.0.0",
+  "type": "library",
+  "description": "The simple php traffic direction system",
+  "keywords": ["cpa","http","tds","traffic-direction-system"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ivan Dudarev",
+      "email": "ivan@ddrv.ru",
+      "homepage": "http://ddrv.ru"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Ddrv\\TDS\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=5.3.2"
+  },
+  "suggests": {
+    "pivik/device-detector": "detecting devices",
+    "wurfl/wurfl-dbapi": "detecting devices",
+    "maxmind-db/reader": "detecting geo by ip address",
+    "ipstack/finder": "detecting data by ip address"
+  }
+}

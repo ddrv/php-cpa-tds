@@ -1,0 +1,4 @@
+data/links/*
+data/responses/*
+!data/links/.gitkeep
+!data/responses/.gitkeep

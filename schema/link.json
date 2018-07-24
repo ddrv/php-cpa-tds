@@ -1,0 +1,87 @@
+{
+  "type": "object",
+  "properties": {
+    "responses": {
+      "$ref": "#/definitions/responses"
+    },
+    "tokens": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/token"
+      }
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+
+      }
+    }
+  },
+  "required":["responses"],
+  "definitions": {
+    "responses": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9\\-\\._]$"
+      }
+    },
+    "token": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "in": {
+          "type": "string"
+        },
+        "position": {
+          "type": "string"
+        },
+        "pattern": {
+          "type": "string"
+        },
+        "match": {
+          "type": "string"
+        }
+      },
+      "required": ["name", "in", "position"]
+    },
+    "criterion": {
+      "type": "object",
+      "properties": {
+        "parameter": {
+          "type": "string"
+        },
+        "operator": {
+          "type": "string",
+          "enum": ["is", "not", "regex", "not regex", "le", "lt", "ge", "gt"]
+        },
+        "values": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["parameter", "operator", "values"]
+    },
+    "rule": {
+      "type": "object",
+      "properties": {
+        "responses": {
+          "$ref": "#/definitions/responses"
+        },
+        "criteria": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/criterion"
+          }
+        }
+      },
+      "required": ["responses"]
+    }
+  }
+}
