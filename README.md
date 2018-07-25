@@ -139,7 +139,7 @@ $responseA = <<<JSON
   "key": "response-a",
   "status": 301,
   "headers": [
-    "location: https:\/\/site.com\/a"
+    "location: https:\/\/site.com\/a",
     "content-type: text/plain"
   ],
   "body": "redirect to https:\/\/site.com\/a"
@@ -151,7 +151,7 @@ $responseB = <<<JSON
   "key": "response-b",
   "status": 301,
   "headers": [
-    "location: https:\/\/site.com\/b"
+    "location: https:\/\/site.com\/b",
     "content-type: text/plain"
   ],
   "body": "redirect to https:\/\/site.com\/b"
@@ -251,7 +251,7 @@ $langSite = <<<JSON
   "key": "lang-site",
   "status": 301,
   "headers": [
-    "location: https:\/\/{{lang}}.site.com"
+    "location: https:\/\/{{lang}}.site.com",
     "content-type: text/plain"
   ],
   "body": "redirect to https:\/\/{{lang}}.site.com"
@@ -264,7 +264,7 @@ $default = <<<JSON
   "key": "site",
   "status": 301,
   "headers": [
-    "location: https:\/\/site.com"
+    "location: https:\/\/site.com",
     "content-type: text/plain"
   ],
   "body": "redirect to https:\/\/site.com"
