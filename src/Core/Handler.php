@@ -27,7 +27,7 @@ class Handler
     public function __construct($responsesDirectory)
     {
         foreach ($this->responses as $key) {
-            $file = $responsesDirectory.DIRECTORY_SEPARATOR.$key.'.php';
+            $file = $responsesDirectory.DIRECTORY_SEPARATOR.'response-'.$key.'.php';
             $class = '\Ddrv\TDS\Binary\Response\Response'.mb_strtoupper(md5($key));
             if (file_exists($file)) require_once($file);
             if (class_exists($class)) $this->responseObjects[$key] = new $class();

@@ -56,7 +56,7 @@ class TDS
         $criteria = false;
 
         $class = '\Ddrv\Tds\Binary\Link\Link'.mb_strtoupper(md5($key));
-        $file = $this->config->path->links.DIRECTORY_SEPARATOR.$key.'.php';
+        $file = $this->config->path->links.DIRECTORY_SEPARATOR.'link-'.$key.'.php';
         if (file_exists($file)) {
             require_once ($file);
         }
