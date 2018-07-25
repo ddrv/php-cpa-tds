@@ -96,6 +96,7 @@ $tds = new \Ddrv\TDS\TDS($config);
 // save from json
 $json = <<<JSON
 {
+  "key": "e404",
   "status": 404,
   "headers": [
     "content-type: text/plain"
@@ -103,11 +104,11 @@ $json = <<<JSON
   "body": "Not Found"
 }
 JSON;
-$tds->storage()->response('e404')->save($json);
+$tds->storage()->response()->save($json);
 
 // save from file
 file_put_contents('/path/to/project/data/responses/e404.json', $json);
-$tds->storage()->response('e404')->save('/path/to/project/data/responses/e404.json');
+$tds->storage()->response()->save('/path/to/project/data/responses/e404.json');
 ```
 
 ## Adding links
@@ -118,16 +119,17 @@ $tds->storage()->response('e404')->save('/path/to/project/data/responses/e404.js
 // save from json
 $json = <<<JSON
 {
+  "key": "test",
   "responses": [
     "e404"
   ]
 }
 JSON;
-$tds->storage()->link('test')->save($json);
+$tds->storage()->link()->save($json);
 
 // save from file
 file_put_contents('/path/to/project/data/links/test.json', $json);
-$tds->storage()->response('e404')->save('/path/to/project/data/links/test.json');
+$tds->storage()->response()->save('/path/to/project/data/links/test.json');
 ```
 
 ## AB tests
@@ -160,15 +162,16 @@ JSON;
 // test link
 $link = <<<JSON
 {
+  "key": "test",
   "responses": [
     "response-a"
     "response-b"
   ]
 }
 JSON;
-$tds->storage()->response('response-a')->save($responseA);
-$tds->storage()->response('response-b')->save($responseB);
-$tds->storage()->link('test')->save($link);
+$tds->storage()->response()->save($responseA);
+$tds->storage()->response()->save($responseB);
+$tds->storage()->link()->save($link);
 
 /*
  * you nueno save links and responses ONLY when changing
@@ -211,6 +214,7 @@ $request = new \Ddrv\TDS\Core\Request($_SERVER, $_GET, $body, $_COOKIE, $extends
 
 $link = <<<JSON
 {
+  "key": "test",
   "rules": [
     "criteria": [
       {
@@ -229,7 +233,7 @@ $link = <<<JSON
 }
 JSON;
 
-$tds->storage()->link('test')->save($link);
+$tds->storage()->link()->save($link);
 
 ```
 
@@ -271,11 +275,12 @@ $default = <<<JSON
 }
 JSON;
 
-$tds->storage()->response('lang-site')->save($langSite);
-$tds->storage()->response('site')->save($default);
+$tds->storage()->response()->save($langSite);
+$tds->storage()->response()->save($default);
 // link
 $link = <<<JSON
 {
+  "key": "test",
   "tokens": [
     {
       "name": "lang",
@@ -308,7 +313,7 @@ $extends = array(
 );
 $body = file_get_contents('php://input');
 $request = new \Ddrv\TDS\Core\Request($_SERVER, $_GET, $body, $_COOKIE, $extends);
-$tds->storage()->link('test')->save($link);
+$tds->storage()->link()->save($link);
 
 ```
 
@@ -317,8 +322,8 @@ $tds->storage()->link('test')->save($link);
 ```php
 <?php
 
-$tds->storage()->response('response-a')->delete();
-$tds->storage()->link('test')->delete();
+$tds->storage()->response()->delete('response-a');
+$tds->storage()->link()->delete('test');
 ```
 
 ## Metrics

@@ -1,6 +1,10 @@
 {
   "type": "object",
   "properties": {
+    "key": {
+      "type": "string",
+      "pattern": "^[a-z0-9\\-\\._]$"
+    },
     "responses": {
       "$ref": "#/definitions/responses"
     },
@@ -17,7 +21,7 @@
       }
     }
   },
-  "required":["responses"],
+  "required":["key", "responses"],
   "definitions": {
     "responses": {
       "type": "array",

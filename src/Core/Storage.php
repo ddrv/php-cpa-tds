@@ -9,27 +9,14 @@ class Storage
 {
 
     /**
-     * @var string
+     * @var Link
      */
-    protected $links;
+    protected $link;
 
     /**
-     * @var string
+     * @var Response
      */
-    protected $responses;
-
-    /**
-     * @var string
-     */
-    protected $tmp;
-
-    /**
-     * @var array
-     */
-    protected $objects = array(
-        'links' => array(),
-        'responses' => array(),
-    );
+    protected $response;
 
     /**
      * Wizard constructor.
@@ -39,32 +26,25 @@ class Storage
      */
     public function __construct($links, $responses, $tmp)
     {
-        $this->links = $links;
-        $this->responses = $responses;
-        $this->tmp = $tmp;
+        $this->response = new Response($responses, $tmp);
+        $this->link = new Link($links, $tmp);
     }
 
     /**
-     * @param $key
+     * @param void
      * @return Response
      */
-    public function response($key)
+    public function response()
     {
-        if (!isset($this->objects['responses'][$key])) {
-            $this->objects['responses'][$key] = new Response($key, $this->responses, $this->tmp);
-        }
-        return $this->objects['responses'][$key];
+        return $this->response;
     }
 
     /**
-     * @param $key
+     * @param void
      * @return Link
      */
-    public function link($key)
+    public function link()
     {
-        if (!isset($this->objects['links'][$key])) {
-            $this->objects['links'][$key] = new Link($key, $this->links, $this->tmp);
-        }
-        return $this->objects['links'][$key];
+        return $this->link;
     }
 }
