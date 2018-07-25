@@ -30,7 +30,7 @@ class Response
     public function __construct($key, $dir, $tmp)
     {
         $this->key = $key;
-        $this->file = $dir.DIRECTORY_SEPARATOR.$this->key.'.php';
+        $this->file = $dir.DIRECTORY_SEPARATOR.'response-'.$this->key.'.php';
         $this->tmp = $tmp;
     }
 
