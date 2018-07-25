@@ -140,12 +140,14 @@ class Link
                 }
                 $and[] = '('.implode(' || ', $or).')';
                 foreach ($rule['criteria'] as $criterion) {
+                    $or = array();
                     $parameter = '$parameter[\''.$criterion['parameter'].'\']';
                     $values = array();
+                    $operator = mb_strtolower($criterion['operator']);
                     foreach ($criterion['values'] as $value) {
                         $values[addslashes($value)] = addslashes($value);
                     }
-                    switch (mb_strtolower($criterion['operator'])) {
+                    switch ($operator) {
                         case 'is':
                             $and[] = 'in_array('.$parameter.', array(\''.implode('\', \'', $values).'\'))';
                             break;
@@ -153,16 +155,23 @@ class Link
                             $and[] = '!in_array('.$parameter.', array(\''.implode('\', \'', $values).'\'))';
                             break;
                         case 'regex':
-                            $or = [];
                             foreach ($values as $value) {
                                 $or[] = 'preg_match(\''.$value.'\', '.$parameter.')';
                             }
                             $and[] = '('.implode(' || ', $or).')';
                             break;
                         case 'not regex':
-                            $or = [];
                             foreach ($values as $value) {
                                 $or[] = '!preg_match(\''.$value.'\', '.$parameter.')';
+                            }
+                            $and[] = '('.implode(' || ', $or).')';
+                            break;
+                        case 'le': //no break
+                        case 'lt': //no break
+                        case 'ge': //no break
+                        case 'gt':
+                            foreach ($values as $value) {
+                                $or[] = 'version_compare('.$parameter.', \''.$value.'\', \''.$operator.'\')';
                             }
                             $and[] = '('.implode(' || ', $or).')';
                             break;
@@ -181,6 +190,7 @@ class Link
                 }
                 $content .= '         * '.(str_pad('', $pad, '=', STR_PAD_BOTH)).PHP_EOL;
                 $content .= '         */'.PHP_EOL;
+
                 $content .= '        if ('.implode(PHP_EOL.'            && ', $and).PHP_EOL.'        ) {'.PHP_EOL;
                 $content .= '            $criteria = \''.str_replace(PHP_EOL, '\'.PHP_EOL'.PHP_EOL.'                .\'', $criteria).'\';'.PHP_EOL;
                 $content .= '            return new Result($this->getResponse(array(\''.implode('\', \'', $rule['responses']).'\')), $criteria, $tokens);'.PHP_EOL;
