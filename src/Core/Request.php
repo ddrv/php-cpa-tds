@@ -73,6 +73,7 @@ class Request
         $path = isset($server['REQUEST_URI']) ? $server['REQUEST_URI'] : '';
         $path = preg_replace('/(^\/+|\?.*)/ui', '', $path);
         $this->parameters['path'] = explode('/', $path);
+        $this->parameters['ip'] = $server['REMOTE_ADDR'];
 
         $uri = $scheme.'://'.$this->parameters['header']['host'];
         if (($scheme == 'http' && $port != 80) || ($scheme == 'https' && $port != 443)) {
