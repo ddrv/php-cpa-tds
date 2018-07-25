@@ -215,7 +215,7 @@ class Link
      * @param array $data
      * @throws Exception
      */
-    protected function check($data)
+    public static function check($data)
     {
         $data = (array)$data;
         $operators = array(
@@ -228,7 +228,7 @@ class Link
             'ge',
             'gt',
         );
-        $e = 'link '.$this->key.': ';
+        $e = 'link error: ';
         if (!$data) throw new Exception($e.'empty data');
         if (!array_key_exists('responses', $data)) throw new Exception($e.'property responses is a required');
         if (!is_array($data['responses'])) throw new Exception($e.'property responses must be an array');

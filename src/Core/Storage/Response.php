@@ -100,10 +100,10 @@ class Response
      * @param array $data
      * @throws Exception
      */
-    protected function check($data)
+    public static function check($data)
     {
         $data = (array)$data;
-        $e = 'response '.$this->key.': ';
+        $e = 'response error: ';
         if (!$data) throw new \Exception($e.'empty data');
         if (!array_key_exists('key', $data)) throw new \Exception($e.'property key is a required');
         if (!array_key_exists('status', $data)) throw new \Exception($e.'property status is a required');
