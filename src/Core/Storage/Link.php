@@ -39,17 +39,21 @@ class Link
     }
 
     /**
-     * @param string $json
+     * @param mixed $link
      * @return bool
      * @throws Exception
      */
-    public function save($json)
+    public function save($link)
     {
         $tmp = $this->tmp.DIRECTORY_SEPARATOR.uniqid();
-        if (file_exists($json)) {
-            $json = file_get_contents($json);
+        if (is_array($link) || is_object($link)) {
+            $data = (array)$link;
+        } else {
+            if (file_exists($link)) {
+                $link = file_get_contents($link);
+            }
+            $data = json_decode($link, true);
         }
-        $data = json_decode($json, true);
         $this->check($data);
         $key = $data['key'];
         $responses = array();

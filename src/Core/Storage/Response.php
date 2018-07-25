@@ -39,17 +39,21 @@ class Response
     }
 
     /**
-     * @param string $json
+     * @param mixed $response
      * @return bool
      * @throws Exception
      */
-    public function save($json)
+    public function save($response)
     {
         $tmp = $this->tmp.DIRECTORY_SEPARATOR.uniqid();
-        if (file_exists($json)) {
-            $json = file_get_contents($json);
+        if (is_array($response) || is_object($response)) {
+            $data = (array)$response;
+        } else {
+            if (file_exists($response)) {
+                $response = file_get_contents($response);
+            }
+            $data = json_decode($response, true);
         }
-        $data = json_decode($json, true);
         $this->check($data);
         $key = $data['key'];
         $file = $this->getFileName($key);
