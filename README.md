@@ -1,7 +1,7 @@
 # Install
 
 ```
-composer require ddrv/tds /path/to/project
+composer require cpa/tds /path/to/project
 ```
 
 # Add library
@@ -18,8 +18,8 @@ require '/path/to/project/vendor/autoload.php';
 
 $body = file_get_contents('php://input');
 
-$request = new \Ddrv\TDS\Core\Request($_SERVER, $_GET, $body, $_COOKIE);
-$tds = new Ddrv\TDS\TDS();
+$request = new \Cpa\TDS\Core\Request($_SERVER, $_GET, $body, $_COOKIE);
+$tds = new Cpa\TDS\TDS();
 $tds->click($request)->response()->out();
 ```
 
@@ -27,7 +27,7 @@ $tds->click($request)->response()->out();
 ```php
 <?php
 
-$config = new \Ddrv\TDS\Config\Config();
+$config = new \Cpa\TDS\Config\Config();
 
 /*
  * ------------------------------------
@@ -84,7 +84,7 @@ $config->trafficBack->status = 301;
 $config->trafficBack->headers = ['location: https://google.com', 'content-type: text/plain'];
 $config->trafficBack->body = 'redirect to google';
 
-$tds = new \Ddrv\TDS\TDS($config);
+$tds = new \Cpa\TDS\TDS($config);
 
 ```
 
@@ -210,7 +210,7 @@ $extends = array(
     ),
 );
 $body = file_get_contents('php://input');
-$request = new \Ddrv\TDS\Core\Request($_SERVER, $_GET, $body, $_COOKIE, $extends);
+$request = new \Cpa\TDS\Core\Request($_SERVER, $_GET, $body, $_COOKIE, $extends);
 
 $link = <<<JSON
 {
@@ -247,7 +247,7 @@ $tds->storage()->link()->save($link);
  */
 
 $body = file_get_contents('php://input');
-$request = new \Ddrv\TDS\Core\Request($_SERVER, $_GET, $body, $_COOKIE);
+$request = new \Cpa\TDS\Core\Request($_SERVER, $_GET, $body, $_COOKIE);
 
 // multi language site
 $langSite = <<<JSON
@@ -312,7 +312,7 @@ $extends = array(
     ),
 );
 $body = file_get_contents('php://input');
-$request = new \Ddrv\TDS\Core\Request($_SERVER, $_GET, $body, $_COOKIE, $extends);
+$request = new \Cpa\TDS\Core\Request($_SERVER, $_GET, $body, $_COOKIE, $extends);
 $tds->storage()->link()->save($link);
 
 ```
@@ -332,8 +332,8 @@ $tds->storage()->link()->delete('test');
 <?php
 
 $body = file_get_contents('php://input');
-$request = new \Ddrv\TDS\Core\Request($_SERVER, $_GET, $body, $_COOKIE);
-$tds = new Ddrv\TDS\TDS();
+$request = new \Cpa\TDS\Core\Request($_SERVER, $_GET, $body, $_COOKIE);
+$tds = new Cpa\TDS\TDS();
 $click = $tds->click($request);
 
 /*

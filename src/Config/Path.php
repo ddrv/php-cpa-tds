@@ -1,6 +1,6 @@
 <?php
 
-namespace Ddrv\TDS\Config;
+namespace Cpa\TDS\Config;
 
 class Path
 {

@@ -1,5 +1,5 @@
 {
-  "name": "ddrv/tds",
+  "name": "cpa/tds",
   "version":"1.0.0",
   "type": "library",
   "description": "The simple php traffic direction system",
@@ -14,7 +14,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Ddrv\\TDS\\": "src/"
+      "Cpa\\TDS\\": "src/"
     }
   },
   "require": {

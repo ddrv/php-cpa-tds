@@ -1,6 +1,6 @@
 <?php
 
-namespace Ddrv\TDS\Core;
+namespace Cpa\TDS\Core;
 
 class Click
 {

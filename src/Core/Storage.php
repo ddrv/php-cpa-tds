@@ -1,9 +1,9 @@
 <?php
 
-namespace Ddrv\TDS\Core;
+namespace Cpa\TDS\Core;
 
-use Ddrv\TDS\Core\Storage\Link;
-use Ddrv\TDS\Core\Storage\Response;
+use Cpa\TDS\Core\Storage\Link;
+use Cpa\TDS\Core\Storage\Response;
 
 class Storage
 {

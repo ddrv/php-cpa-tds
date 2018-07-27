@@ -1,8 +1,8 @@
 <?php
 
-namespace Ddrv\TDS\Core\Handler;
+namespace Cpa\TDS\Core\Handler;
 
-use Ddrv\TDS\Core\Response;
+use Cpa\TDS\Core\Response;
 
 class Result
 {

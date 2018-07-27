@@ -1,13 +1,13 @@
 <?php
 
-namespace Ddrv\TDS;
+namespace Cpa\TDS;
 
-use Ddrv\TDS\Config\Config;
-use Ddrv\TDS\Core\Click;
-use Ddrv\TDS\Core\Handler;
-use Ddrv\TDS\Core\Request;
-use Ddrv\TDS\Core\Response;
-use Ddrv\TDS\Core\Storage;
+use Cpa\TDS\Config\Config;
+use Cpa\TDS\Core\Click;
+use Cpa\TDS\Core\Handler;
+use Cpa\TDS\Core\Request;
+use Cpa\TDS\Core\Response;
+use Cpa\TDS\Core\Storage;
 
 
 /**
@@ -55,7 +55,7 @@ class TDS
         $result = false;
         $criteria = false;
 
-        $class = '\Ddrv\Tds\Binary\Link\Link'.mb_strtoupper(md5($key));
+        $class = '\Cpa\Tds\Binary\Link\Link'.mb_strtoupper(md5($key));
         $file = $this->config->path->links.DIRECTORY_SEPARATOR.'link-'.$key.'.php';
         if (file_exists($file)) {
             require_once ($file);

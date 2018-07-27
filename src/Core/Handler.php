@@ -1,8 +1,8 @@
 <?php
 
-namespace Ddrv\TDS\Core;
+namespace Cpa\TDS\Core;
 
-use Ddrv\TDS\Core\Handler\Result;
+use Cpa\TDS\Core\Handler\Result;
 
 class Handler
 {
@@ -28,7 +28,7 @@ class Handler
     {
         foreach ($this->responses as $key) {
             $file = $responsesDirectory.DIRECTORY_SEPARATOR.'response-'.$key.'.php';
-            $class = '\Ddrv\TDS\Binary\Response\Response'.mb_strtoupper(md5($key));
+            $class = '\Cpa\TDS\Binary\Response\Response'.mb_strtoupper(md5($key));
             if (file_exists($file)) require_once($file);
             if (class_exists($class)) $this->responseObjects[$key] = new $class();
         }
