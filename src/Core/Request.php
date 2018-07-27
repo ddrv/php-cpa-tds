@@ -176,7 +176,7 @@ class Request
     {
         if (!array_key_exists($name, $this->parameters)) return null;
         $key = (string)($arguments?array_shift($arguments):'');
-        if (!$key) return $this->parameters[$name];
+        if ($key == '') return $this->parameters[$name];
         $keys = explode('.', $key);
         $result = $this->parameters[$name];
         foreach ($keys as $key) {
