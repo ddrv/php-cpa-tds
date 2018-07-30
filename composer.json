@@ -18,9 +18,11 @@
     }
   },
   "require": {
-    "php": ">=5.3.2"
+    "php": ">=5.3.0",
+    "ext-json": "*",
+    "ext-mbstring": "*"
   },
-  "suggests": {
+  "suggest": {
     "pivik/device-detector": "detecting devices",
     "wurfl/wurfl-dbapi": "detecting devices",
     "maxmind-db/reader": "detecting geo by ip address",
