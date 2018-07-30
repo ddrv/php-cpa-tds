@@ -19,6 +19,37 @@
     "body": {
       "type": "string"
     },
+    "cookies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name" : {
+            "type": "string"
+          },
+          "value" : {
+            "type": "string"
+          },
+          "domain" : {
+            "type": "string"
+          },
+          "path" : {
+            "type": "string"
+          },
+          "secure" : {
+            "type": "boolean"
+          },
+          "httpOnly" : {
+            "type": "boolean"
+          },
+          "hours" : {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": ["name", "value"]
+      }
+    },
     "extends": {
       "type": "object"
     }

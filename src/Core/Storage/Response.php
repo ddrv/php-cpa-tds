@@ -90,6 +90,23 @@ class Response
             $content .= '        \''.(string)$header.'\',' . PHP_EOL;
         }
         $content .= '    );'.PHP_EOL.PHP_EOL;
+        if (!empty($data['cookies'])) {
+            $content .= '    /**' . PHP_EOL;
+            $content .= '     * @var string[]' . PHP_EOL;
+            $content .= '     */' . PHP_EOL;
+            $content .= '    protected $cookies = array(' . PHP_EOL;
+            foreach ($data['cookies'] as $cookie) {
+                $content .= '        \'' . addslashes((string)$cookie['name']) . '\' => array(' . PHP_EOL;
+                $content .= '            \'value\' => \'' . addslashes((string)$cookie['value']) . '\',' . PHP_EOL;
+                $content .= '            \'domain\' => \'' . (empty($cookie['domain'])?'':addslashes((string)$cookie['domain'])) . '\',' . PHP_EOL;
+                $content .= '            \'path\' => \'' . (empty($cookie['path'])?'/':addslashes((string)$cookie['path'])) . '\',' . PHP_EOL;
+                $content .= '            \'secure\' => ' . (empty($cookie['secure'])?'false':'true') . ',' . PHP_EOL;
+                $content .= '            \'httpOnly\' => ' . (empty($cookie['httpOnly'])?'false':'true') . ',' . PHP_EOL;
+                $content .= '            \'hours\' => ' . (empty($cookie['hours'])?'0':(int)$cookie['hours']) . ',' . PHP_EOL;
+                $content .= '        ),' . PHP_EOL;
+            }
+            $content .= '    );' . PHP_EOL . PHP_EOL;
+        }
         $content .= '    /**'.PHP_EOL;
         $content .= '     * @var string'.PHP_EOL;
         $content .= '     */'.PHP_EOL;
@@ -126,12 +143,22 @@ class Response
         if (!array_key_exists('status', $data)) throw new \Exception($e.'property status is a required');
         if (!array_key_exists('headers', $data)) throw new \Exception($e.'property headers is a required');
         if (!is_array($data['headers'])) throw new \Exception($e.'property headers must be an array');
+        if (array_key_exists('cookies', $data) && !is_array($data['cookies'])) throw new \Exception($e.'property cookies must be an array');
         if (!array_key_exists('body', $data)) throw new \Exception($e.'property body is a required');
         if (!preg_match('/^[a-z0-9\-\._]+$/ui', $data['key'])) throw new \Exception($e.'incorrect key');
         if ($data['status'] != (int)$data['status']) throw new \Exception($e.'property status must be an integer');
         if ($data['body'] != (string)$data['body']) throw new \Exception($e.'property body must be a string');
         foreach ($data['headers'] as $num => $header) {
-            if ($header != (string)$header) throw new \Exception($e.'property header.'.$num.' must be a string');
+            if ($header != (string)$header) throw new \Exception($e.'property headers.'.$num.' must be a string');
+        }
+        if (!empty($data['cookies'])) {
+            foreach ($data['cookies'] as $num => $cookie) {
+                if (!array_key_exists('name', $cookie)) throw new \Exception($e . 'property cookies.' . $num . '.name is a required');
+                if (!array_key_exists('value', $cookie)) throw new \Exception($e . 'property cookies.' . $num . '.value is a required');
+                if ($cookie['name'] != (string)$cookie['name']) throw new \Exception($e . 'property cookies.' . $num . '.name must be a string');
+                if ($cookie['value'] != (string)$cookie['value']) throw new \Exception($e . 'property cookies.' . $num . '.value must be a string');
+                if (array_key_exists('hours', $cookie) && $cookie['hours'] != (int)$cookie['hours']) throw new \Exception($e . 'property cookies.' . $num . '.hours must be an integer');
+            }
         }
     }
 
@@ -142,7 +169,6 @@ class Response
      */
     protected function getParameters($array, $tab=0)
     {
-        $prefix = str_repeat('    ',$tab);
         $result = 'array(';
         $array = (array)$array;
         foreach ($array as $key=>$value) {

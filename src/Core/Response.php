@@ -31,19 +31,48 @@ class Response
     protected $parameters = array();
 
     /**
+     * @var array
+     */
+    protected $cookies = array();
+
+    /**
      * @param string $key
      * @param int $status
      * @param array $headers
      * @param string $body
      * @param array $extends
+     * @param array $cookies
      */
-    public function __construct($key=null, $status = null, $headers = null, $body = null, $extends = null)
+    public function __construct($key=null, $status = null, $headers = null, $body = null, $extends = null, $cookies = null)
     {
         if (!is_null($key)) $this->key = (string)$key;
         if (!is_null($status)) $this->status = (int)$status;
         if (!is_null($headers)) $this->headers = (array)$headers;
         if (!is_null($body)) $this->body = (string)$body;
         if (!is_null($extends)) $this->parameters = (array)$extends;
+        if (!is_null($cookies)) $this->cookies = (array)$cookies;
+        foreach ($this->cookies as $key=>$cookie) {
+            if (empty($cookie['value'])) continue;
+            $header = 'set-cookie: '.(string)$key.'='.(string)$cookie['value'].';';
+            if (isset($cookie['domain'])) {
+                $header .= ' Domain='.$cookie['domain'].';';
+            }
+            if (isset($cookie['path'])) {
+                $header .= ' Path='.$cookie['path'].';';
+            }
+            if (!empty($cookie['hours'])) {
+                $date = new \DateTime();
+                $date = $date->modify('+'.$cookie['hours'].' hours');
+                $header .= ' Expires='.$date->format(DATE_COOKIE).';';
+            }
+            if (!empty($cookie['secure'])) {
+                $header .= ' Secure;';
+            }
+            if (!empty($cookie['httpOnly'])) {
+                $header .= ' HttpOnly;';
+            }
+            $this->headers[] = $header;
+        }
     }
 
     /**
