@@ -1,6 +1,6 @@
 {
   "name": "cpa/tds",
-  "version":"1.2.0",
+  "version":"1.2.1",
   "type": "library",
   "description": "The simple php traffic direction system",
   "keywords": ["cpa","http","tds","traffic-direction-system"],
@@ -23,7 +23,7 @@
     "ext-mbstring": "*"
   },
   "suggest": {
-    "pivik/device-detector": "detecting devices",
+    "piwik/device-detector": "detecting devices",
     "wurfl/wurfl-dbapi": "detecting devices",
     "maxmind-db/reader": "detecting geo by ip address",
     "ipstack/finder": "detecting data by ip address"
