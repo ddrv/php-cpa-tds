@@ -57,6 +57,9 @@ class Response
         $this->check($data);
         $key = $data['key'];
         $file = $this->getFileName($key);
+
+        $parameters = isset($data['extends'])?($this->getParameters($data['extends'], 2)):'array()';
+
         $className = 'Response'.mb_strtoupper(md5($key));
         $content = '<?php'.PHP_EOL.PHP_EOL;
         $content .= 'namespace Cpa\TDS\Binary\Response;'.PHP_EOL.PHP_EOL;
@@ -91,6 +94,10 @@ class Response
         $content .= '     * @var string'.PHP_EOL;
         $content .= '     */'.PHP_EOL;
         $content .= '    protected $body = \''.(string)$data['body'].'\';'.PHP_EOL.PHP_EOL;
+        $content .= '    /**'.PHP_EOL;
+        $content .= '     * @var array'.PHP_EOL;
+        $content .= '     */'.PHP_EOL;
+        $content .= '    protected $parameters = '.$parameters.';'.PHP_EOL.PHP_EOL;
         $content .= '}'.PHP_EOL;
         file_put_contents($tmp, $content);
         rename($tmp, $file);
@@ -126,5 +133,21 @@ class Response
         foreach ($data['headers'] as $num => $header) {
             if ($header != (string)$header) throw new \Exception($e.'property header.'.$num.' must be a string');
         }
+    }
+
+    /**
+     * @param array $array
+     * @param int $tab
+     * @return string
+     */
+    protected function getParameters($array, $tab=0)
+    {
+        $prefix = str_repeat('    ',$tab);
+        $result = 'array(';
+        $array = (array)$array;
+        foreach ($array as $key=>$value) {
+            $result .= PHP_EOL.str_repeat('    ', $tab).'\''.addslashes($key).'\' => '.(is_array($value)?$this->getParameters($value, $tab+1):'\''.addslashes($value).'\',');
+        }
+        return $result.PHP_EOL.str_repeat('    ', $tab-1).')';
     }
 }

@@ -26,17 +26,24 @@ class Response
     protected $body = 'Not Found';
 
     /**
+     * @var array
+     */
+    protected $parameters = array();
+
+    /**
      * @param string $key
      * @param int $status
      * @param array $headers
      * @param string $body
+     * @param array $extends
      */
-    public function __construct($key=null, $status = null, $headers = null, $body = null)
+    public function __construct($key=null, $status = null, $headers = null, $body = null, $extends = null)
     {
         if (!is_null($key)) $this->key = (string)$key;
         if (!is_null($status)) $this->status = (int)$status;
         if (!is_null($headers)) $this->headers = (array)$headers;
         if (!is_null($body)) $this->body = (string)$body;
+        if (!is_null($extends)) $this->parameters = (array)$extends;
     }
 
     /**
@@ -125,6 +132,25 @@ class Response
         $raw .= implode(PHP_EOL, $this->headers).PHP_EOL.PHP_EOL;
         $raw .= $this->body;
         return $raw;
+    }
+
+    /**
+     * @param $name
+     * @param $arguments
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+        if (!array_key_exists($name, $this->parameters)) return null;
+        $key = (string)($arguments?array_shift($arguments):'');
+        if ($key == '') return $this->parameters[$name];
+        $keys = explode('.', $key);
+        $result = $this->parameters[$name];
+        foreach ($keys as $key) {
+            if (!isset($result[$key])) return null;
+            $result = $result[$key];
+        }
+        return $result;
     }
 
     /**

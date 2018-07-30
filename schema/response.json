@@ -18,6 +18,9 @@
     },
     "body": {
       "type": "string"
+    },
+    "extends": {
+      "type": "object"
     }
   },
   "required":["key", "status", "headers", "body"]
