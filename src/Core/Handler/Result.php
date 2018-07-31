@@ -23,15 +23,22 @@ class Result
     protected $tokens = array();
 
     /**
+     * @var array
+     */
+    protected $cookies = array();
+
+    /**
      * @param Response $response
      * @param string $criteria
      * @param array $tokens
+     * @param array $cookies
      */
-    public function __construct(Response $response, $criteria = '', $tokens = array())
+    public function __construct(Response $response, $criteria = '', $tokens = array(), $cookies = array())
     {
         $this->response = $response;
         $this->criteria = (string)$criteria;
         $this->tokens = (array)$tokens;
+        $this->cookies = (array)$cookies;
     }
 
     /**
@@ -56,5 +63,13 @@ class Result
     public function tokens()
     {
         return $this->tokens;
+    }
+
+    /**
+     * @return array
+     */
+    public function cookies()
+    {
+        return $this->cookies;
     }
 }

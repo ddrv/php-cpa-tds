@@ -88,6 +88,10 @@ class Link
         $content .= 'class '.$className.' extends Handler'.PHP_EOL;
         $content .= '{'.PHP_EOL.PHP_EOL;
         $content .= '    /**'.PHP_EOL;
+        $content .= '     * @var string'.PHP_EOL;
+        $content .= '     */'.PHP_EOL;
+        $content .= '    protected $key = \''.addslashes($key).'\';'.PHP_EOL.PHP_EOL;
+        $content .= '    /**'.PHP_EOL;
         $content .= '     * @var string[]'.PHP_EOL;
         $content .= '     */'.PHP_EOL;
         $content .= '    protected $responses = array('.PHP_EOL;
@@ -125,8 +129,8 @@ class Link
             foreach ($parameters as $parameter) {
                 preg_match('/^(?<method>[a-z]+)(\.(?<key>.*))?$/ui', $parameter, $m);
                 $method = $m['method'];
-                $key = isset($m['key'])?'\''.$m['key'].'\'':'';
-                $content .= '        $parameter[\''.$parameter.'\'] = $request->'.$method.'('.$key.');'.PHP_EOL;
+                $k = isset($m['key'])?'\''.$m['key'].'\'':'';
+                $content .= '        $parameter[\''.$parameter.'\'] = $request->'.$method.'('.$k.');'.PHP_EOL;
             }
         }
         $content .= PHP_EOL;
@@ -193,7 +197,23 @@ class Link
 
                 $content .= '        if ('.implode(PHP_EOL.'            && ', $and).PHP_EOL.'        ) {'.PHP_EOL;
                 $content .= '            $criteria = \''.str_replace(PHP_EOL, '\'.PHP_EOL'.PHP_EOL.'                .\'', $criteria).'\';'.PHP_EOL;
-                $content .= '            return new Result($this->getResponse(array(\''.implode('\', \'', $rule['responses']).'\')), $criteria, $tokens);'.PHP_EOL;
+                $content .= '            $cookies = array(';
+                if (!empty($rule['cookies'])) {
+                    $content .= PHP_EOL;
+                    foreach ($rule['cookies'] as $cookie) {
+                        $content .= '                \'' . addslashes((string)$cookie['name']) . '\' => array(' . PHP_EOL;
+                        $content .= '                    \'value\' => \'' . addslashes((string)$cookie['value']) . '\',' . PHP_EOL;
+                        $content .= '                    \'domain\' => \'' . (empty($cookie['domain']) ? '' : addslashes((string)$cookie['domain'])) . '\',' . PHP_EOL;
+                        $content .= '                    \'path\' => \'' . (empty($cookie['path']) ? '/' : addslashes((string)$cookie['path'])) . '\',' . PHP_EOL;
+                        $content .= '                    \'secure\' => ' . (empty($cookie['secure']) ? 'false' : 'true') . ',' . PHP_EOL;
+                        $content .= '                    \'httpOnly\' => ' . (empty($cookie['httpOnly']) ? 'false' : 'true') . ',' . PHP_EOL;
+                        $content .= '                    \'hours\' => ' . (empty($cookie['hours']) ? '0' : (int)$cookie['hours']) . ',' . PHP_EOL;
+                        $content .= '                ),' . PHP_EOL;
+                    }
+                    $content .= '            ';
+                }
+                $content .= ');' . PHP_EOL;
+                $content .= '            return new Result($this->getResponse(array(\''.implode('\', \'', $rule['responses']).'\')), $criteria, $tokens, $cookies);'.PHP_EOL;
                 $content .= '        }'.PHP_EOL.PHP_EOL;
             }
         }
@@ -203,7 +223,23 @@ class Link
         $content .= '         * Default'.PHP_EOL;
         $content .= '         * ======================='.PHP_EOL;
         $content .= '         */'.PHP_EOL;
-        $content .= '        return new Result($this->getResponse(array(\''.implode('\', \'', $data['responses']).'\')), null, $tokens);'.PHP_EOL;
+        $content .= '        $cookies = array(';
+        if (!empty($data['cookies'])) {
+            $content .= PHP_EOL;
+            foreach ($data['cookies'] as $cookie) {
+                $content .= '            \'' . addslashes((string)$cookie['name']) . '\' => array(' . PHP_EOL;
+                $content .= '                \'value\' => \'' . addslashes((string)$cookie['value']) . '\',' . PHP_EOL;
+                $content .= '                \'domain\' => \'' . (empty($cookie['domain']) ? '' : addslashes((string)$cookie['domain'])) . '\',' . PHP_EOL;
+                $content .= '                \'path\' => \'' . (empty($cookie['path']) ? '/' : addslashes((string)$cookie['path'])) . '\',' . PHP_EOL;
+                $content .= '                \'secure\' => ' . (empty($cookie['secure']) ? 'false' : 'true') . ',' . PHP_EOL;
+                $content .= '                \'httpOnly\' => ' . (empty($cookie['httpOnly']) ? 'false' : 'true') . ',' . PHP_EOL;
+                $content .= '                \'hours\' => ' . (empty($cookie['hours']) ? '0' : (int)$cookie['hours']) . ',' . PHP_EOL;
+                $content .= '            ),' . PHP_EOL;
+            }
+            $content .= '        ';
+        }
+        $content .= ');'.PHP_EOL;
+        $content .= '        return new Result($this->getResponse(array(\''.implode('\', \'', $data['responses']).'\')), null, $tokens, $cookies);'.PHP_EOL;
         $content .= '    }'.PHP_EOL;
         $content .= '}'.PHP_EOL;
         file_put_contents($tmp, $content);
@@ -257,6 +293,16 @@ class Link
                 if ($token['position'] != (string)$token['position']) throw new Exception($e.'property tokens.'.$num.'.position must be a string');
             }
         };
+        if (!empty($data['cookies'])) {
+            if (!is_array($data['cookies'])) throw new Exception($e.'property cookies must be an array');
+            foreach ($data['cookies'] as $num => $cookie) {
+                if (!array_key_exists('name', $cookie)) throw new \Exception($e . 'property cookies.' . $num . '.name is a required');
+                if (!array_key_exists('value', $cookie)) throw new \Exception($e . 'property cookies.' . $num . '.value is a required');
+                if ($cookie['name'] != (string)$cookie['name']) throw new \Exception($e . 'property cookies.' . $num . '.name must be a string');
+                if ($cookie['value'] != (string)$cookie['value']) throw new \Exception($e . 'property cookies.' . $num . '.value must be a string');
+                if (array_key_exists('hours', $cookie) && $cookie['hours'] != (int)$cookie['hours']) throw new \Exception($e . 'property cookies.' . $num . '.hours must be an integer');
+            }
+        }
         if (array_key_exists('rules', $data)) {
             if (!is_array($data['rules'])) throw new Exception($e.'property rules must be an array');
             foreach ($data['rules'] as $rnum=>$rule) {
@@ -273,6 +319,16 @@ class Link
                     if (!in_array(mb_strtolower($criterion['operator']), $operators)) throw new Exception($e.'property rules.'.$rnum.'.criteria.'.$cnum.'.operator must be one of '.implode(', ',$operators));
                     foreach ($criterion['values'] as $vnum=>$value) {
                         if ($value != (string)$value) throw new Exception($e.'property rules.'.$rnum.'.criteria.'.$cnum.'.values.'.$vnum.' must be a string');
+                    }
+                }
+                if (!empty($rule['cookies'])) {
+                    if (!is_array($rule['cookies'])) throw new Exception($e.'property rules.'.$rnum.'.cookies must be an array');
+                    foreach ($rule['cookies'] as $cnum => $cookie) {
+                        if (!array_key_exists('name', $cookie)) throw new \Exception($e . 'property rules.'.$rnum.'.cookies.' . $num . '.name is a required');
+                        if (!array_key_exists('value', $cookie)) throw new \Exception($e . 'property rules.'.$rnum.'.cookies.' . $num . '.value is a required');
+                        if ($cookie['name'] != (string)$cookie['name']) throw new \Exception($e . 'property rules.'.$rnum.'.cookies.' . $num . '.name must be a string');
+                        if ($cookie['value'] != (string)$cookie['value']) throw new \Exception($e . 'property rules.'.$rnum.'.cookies.' . $num . '.value must be a string');
+                        if (array_key_exists('hours', $cookie) && $cookie['hours'] != (int)$cookie['hours']) throw new \Exception($e . 'property rules.'.$rnum.'.cookies.' . $num . '.hours must be an integer');
                     }
                 }
             }

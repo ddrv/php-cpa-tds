@@ -2,6 +2,9 @@
 
 namespace Cpa\TDS\Core;
 
+use DateTime;
+use DateTimeZone;
+
 class Response
 {
 
@@ -51,28 +54,7 @@ class Response
         if (!is_null($body)) $this->body = (string)$body;
         if (!is_null($extends)) $this->parameters = (array)$extends;
         if (!is_null($cookies)) $this->cookies = (array)$cookies;
-        foreach ($this->cookies as $key=>$cookie) {
-            if (empty($cookie['value'])) continue;
-            $header = 'set-cookie: '.(string)$key.'='.(string)$cookie['value'].';';
-            if (isset($cookie['domain'])) {
-                $header .= ' Domain='.$cookie['domain'].';';
-            }
-            if (isset($cookie['path'])) {
-                $header .= ' Path='.$cookie['path'].';';
-            }
-            if (!empty($cookie['hours'])) {
-                $date = new \DateTime();
-                $date = $date->modify('+'.$cookie['hours'].' hours');
-                $header .= ' Expires='.$date->format(DATE_COOKIE).';';
-            }
-            if (!empty($cookie['secure'])) {
-                $header .= ' Secure;';
-            }
-            if (!empty($cookie['httpOnly'])) {
-                $header .= ' HttpOnly;';
-            }
-            $this->headers[] = $header;
-        }
+        $this->setCookies($this->cookies);
     }
 
     /**
@@ -150,6 +132,32 @@ class Response
         }
         echo $this->body;
         die;
+    }
+
+    public function setCookies($cookies)
+    {
+        foreach ($cookies as $key=>$cookie) {
+            if (empty($cookie['value'])) continue;
+            $header = 'set-cookie: '.(string)$key.'='.(string)$cookie['value'].';';
+            if (isset($cookie['domain'])) {
+                $header .= ' Domain='.$cookie['domain'].';';
+            }
+            if (isset($cookie['path'])) {
+                $header .= ' Path='.$cookie['path'].';';
+            }
+            if (!empty($cookie['hours'])) {
+                $date = new DateTime(null, new DateTimeZone('GMT'));
+                $date = $date->modify('+'.$cookie['hours'].' hours');
+                $header .= ' Expires='.$date->format(DATE_RFC7231).';';
+            }
+            if (!empty($cookie['secure'])) {
+                $header .= ' Secure;';
+            }
+            if (!empty($cookie['httpOnly'])) {
+                $header .= ' HttpOnly;';
+            }
+            $this->headers[] = $header;
+        }
     }
 
     /**

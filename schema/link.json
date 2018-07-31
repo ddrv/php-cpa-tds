@@ -17,7 +17,13 @@
     "rules": {
       "type": "array",
       "items": {
-
+        "$ref": "#/definitions/rule"
+      }
+    },
+    "cookies": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/cookie"
       }
     }
   },
@@ -77,6 +83,12 @@
         "responses": {
           "$ref": "#/definitions/responses"
         },
+        "cookies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cookie"
+          }
+        },
         "criteria": {
           "type": "array",
           "minItems": 1,
@@ -86,6 +98,34 @@
         }
       },
       "required": ["responses"]
+    },
+    "cookie": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "domain": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "secure": {
+          "type": "boolean"
+        },
+        "httpOnly": {
+          "type": "boolean"
+        },
+        "hours": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": ["name", "value"]
     }
   }
 }

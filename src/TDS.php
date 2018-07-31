@@ -52,6 +52,7 @@ class TDS
         );
 
         $tokens = array();
+        $cookies = array();
         $result = false;
         $criteria = false;
 
@@ -71,6 +72,7 @@ class TDS
         if ($result) {
             $response = $result->response();
             $tokens = $result->tokens();
+            $cookies = $result->cookies();
             $criteria = $result->criteria();
         } else {
             $response = new Response(
@@ -80,6 +82,10 @@ class TDS
                 $this->config->trafficBack->body
             );
         }
+        if ($cookies) {
+            $response->setCookies($cookies);
+        }
+        $tokens['link'] = $key;
         $response->replace($tokens, true);
         return new Click($request, $response, $key, $criteria, $tokens);
     }
