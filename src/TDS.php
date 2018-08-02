@@ -40,9 +40,11 @@ class TDS
 
     /**
      * @param Request $request
+     * @param string $linkToken
+     * @param array $replace
      * @return Click
      */
-    public function click(Request $request)
+    public function click(Request $request, $linkToken = '', $replace = array())
     {
         $key = $request->param(
             $this->config->key->in,
@@ -50,7 +52,9 @@ class TDS
             $this->config->key->pattern,
             $this->config->key->match
         );
-
+        if ($linkToken) {
+            $replace[$linkToken] = $key;
+        }
         $tokens = array();
         $cookies = array();
         $result = false;
@@ -85,7 +89,7 @@ class TDS
         if ($cookies) {
             $response->setCookies($cookies);
         }
-        $tokens['link'] = $key;
+        $response->replace($replace, false);
         $response->replace($tokens, true);
         return new Click($request, $response, $key, $criteria, $tokens);
     }
