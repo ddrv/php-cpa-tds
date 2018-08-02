@@ -65,7 +65,7 @@ class TDS
         $tokens = array();
         $cookies = array();
         $result = false;
-        $criteria = false;
+        $criteria = array();
 
         $class = '\Cpa\Tds\Binary\Link\Link'.mb_strtoupper(md5($key));
         $file = $this->config->path->links.DIRECTORY_SEPARATOR.'link-'.$key.'.php';
