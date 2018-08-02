@@ -196,7 +196,7 @@ class Link
                 $content .= '         */'.PHP_EOL;
 
                 $content .= '        if ('.implode(PHP_EOL.'            && ', $and).PHP_EOL.'        ) {'.PHP_EOL;
-                $content .= '            $criteria = \''.str_replace(PHP_EOL, '\'.PHP_EOL'.PHP_EOL.'                .\'', $criteria).'\';'.PHP_EOL;
+                $content .= '            $criteria = json_decode(\''.json_encode($rule['criteria']).'\', true);'.PHP_EOL;
                 $content .= '            $cookies = array(';
                 if (!empty($rule['cookies'])) {
                     $content .= PHP_EOL;
@@ -239,7 +239,7 @@ class Link
             $content .= '        ';
         }
         $content .= ');'.PHP_EOL;
-        $content .= '        return new Result($this->getResponse(array(\''.implode('\', \'', $data['responses']).'\')), null, $tokens, $cookies);'.PHP_EOL;
+        $content .= '        return new Result($this->getResponse(array(\''.implode('\', \'', $data['responses']).'\')), array(), $tokens, $cookies);'.PHP_EOL;
         $content .= '    }'.PHP_EOL;
         $content .= '}'.PHP_EOL;
         file_put_contents($tmp, $content);

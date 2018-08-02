@@ -40,7 +40,7 @@ class Handler
      */
     public function click(Request $request)
     {
-        return new Result(null, null, array());
+        return new Result(null, array(), array(), array());
     }
 
     /**

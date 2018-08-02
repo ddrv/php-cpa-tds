@@ -21,7 +21,7 @@ class Click
     protected $link;
 
     /**
-     * @var string
+     * @var array
      */
     protected $criteria;
 
@@ -31,20 +31,19 @@ class Click
     protected $tokens = array();
 
     /**
-     * Click constructor.
-     * @param $request
-     * @param $response
-     * @param $link
-     * @param $criteria
-     * @param $tokens
+     * @param Request $request
+     * @param Response $response
+     * @param string $link
+     * @param array $criteria
+     * @param array $tokens
      */
     public function __construct(Request $request, Response $response, $link, $criteria, $tokens)
     {
         $this->request = $request;
         $this->response = $response;
-        $this->link = $link;
-        $this->criteria = $criteria;
-        $this->tokens = $tokens;
+        $this->link = (string)$link;
+        $this->criteria = (array)$criteria;
+        $this->tokens = (array)$tokens;
     }
 
     /**
@@ -72,7 +71,7 @@ class Click
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function criteria()
     {

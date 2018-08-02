@@ -15,7 +15,7 @@ class Result
     /**
      * @var string
      */
-    protected $criteria = '';
+    protected $criteria = array();
 
     /**
      * @var array
@@ -29,14 +29,14 @@ class Result
 
     /**
      * @param Response $response
-     * @param string $criteria
+     * @param array $criteria
      * @param array $tokens
      * @param array $cookies
      */
-    public function __construct(Response $response, $criteria = '', $tokens = array(), $cookies = array())
+    public function __construct(Response $response, $criteria = array(), $tokens = array(), $cookies = array())
     {
         $this->response = $response;
-        $this->criteria = (string)$criteria;
+        $this->criteria = (array)$criteria;
         $this->tokens = (array)$tokens;
         $this->cookies = (array)$cookies;
     }
@@ -50,7 +50,7 @@ class Result
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function criteria()
     {
