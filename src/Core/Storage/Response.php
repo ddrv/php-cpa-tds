@@ -87,7 +87,7 @@ class Response
         $content .= '     */'.PHP_EOL;
         $content .= '    protected $headers = array('.PHP_EOL;
         foreach ($data['headers'] as $header) {
-            $content .= '        \''.(string)$header.'\',' . PHP_EOL;
+            $content .= '        \''.addslashes((string)$header).'\',' . PHP_EOL;
         }
         $content .= '    );'.PHP_EOL.PHP_EOL;
         if (!empty($data['cookies'])) {
@@ -110,7 +110,7 @@ class Response
         $content .= '    /**'.PHP_EOL;
         $content .= '     * @var string'.PHP_EOL;
         $content .= '     */'.PHP_EOL;
-        $content .= '    protected $body = \''.(string)$data['body'].'\';'.PHP_EOL.PHP_EOL;
+        $content .= '    protected $body = \''.addslashes((string)$data['body']).'\';'.PHP_EOL.PHP_EOL;
         $content .= '    /**'.PHP_EOL;
         $content .= '     * @var array'.PHP_EOL;
         $content .= '     */'.PHP_EOL;
