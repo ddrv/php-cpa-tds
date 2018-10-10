@@ -121,9 +121,10 @@ class Response
     }
 
     /**
+     * @param bool $die
      * @return void
      */
-    public function out()
+    public function out($die=true)
     {
         $message = $this->getMessage($this->status);
         header('Status: '.$this->status.' '.$message);
@@ -131,7 +132,7 @@ class Response
             header(trim($header), false);
         }
         echo $this->body;
-        die;
+        if ($die) die;
     }
 
     public function setCookies($cookies)
