@@ -1,3 +1,4 @@
+.idea/*
 data/links/*
 data/responses/*
 !data/links/.gitkeep
