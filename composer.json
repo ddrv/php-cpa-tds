@@ -1,9 +1,9 @@
 {
   "name": "cpa/tds",
-  "version":"1.5.2",
+  "version":"1.5.3",
   "type": "library",
   "description": "The simple php traffic direction system",
-  "keywords": ["cpa","http","tds","traffic-direction-system"],
+  "keywords": ["cpa", "http", "tds", "traffic-direction-system"],
   "license": "MIT",
   "authors": [
     {
