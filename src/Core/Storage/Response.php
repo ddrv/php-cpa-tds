@@ -108,13 +108,14 @@ class Response
             $content .= '    );' . PHP_EOL . PHP_EOL;
         }
         $content .= '    /**'.PHP_EOL;
-        $content .= '     * @var string'.PHP_EOL;
-        $content .= '     */'.PHP_EOL;
-        $content .= '    protected $body = \''.addslashes((string)$data['body']).'\';'.PHP_EOL.PHP_EOL;
-        $content .= '    /**'.PHP_EOL;
         $content .= '     * @var array'.PHP_EOL;
         $content .= '     */'.PHP_EOL;
         $content .= '    protected $parameters = '.$parameters.';'.PHP_EOL.PHP_EOL;
+        $content .= '    public function __construct()'.PHP_EOL;
+        $content .= '    {'.PHP_EOL;
+        $content .= '        $this->body = base64_decode(\''.base64_encode($data['body']).'\');'.PHP_EOL;
+        $content .= '        parent::_construct();'.PHP_EOL;
+        $content .= '    }'.PHP_EOL;
         $content .= '}'.PHP_EOL;
         file_put_contents($tmp, $content);
         rename($tmp, $file);
